@@ -9,15 +9,6 @@ const userSchema = new Schema({
         trim: true,
         minlength: 1
     },
-    tokens: {
-        type: Schema.Types.Mixed,
-        required: true,
-        default: {
-            "accessToken": "",
-            "refreshToken": "",
-            "expires": ""
-        }
-    },
     accountStatus: {
         type: String,
         default: "User"

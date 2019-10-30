@@ -6,10 +6,37 @@ const jwtSecret = process.env.JWT_SECRET;
 // Models
 let User = require('../../database/models/user.model');
 
+// Get user
+router.get('/:id', (req, res) => {
+    const userId = req.params.id;
+    User.findOne({userId}).then(user => {
+        if(!user) {
+            return res.status(400).json({msg: "No user found."});
+        }
+
+        jwt.sign(
+            {userId: user.id},
+            jwtSecret,
+            {expiresIn: 3600},
+            (err, token) => {
+                if(err) throw err;
+                res.json({
+                    token,
+                    user: {
+                        userId: user.userId,
+                        emotes: user.emotes,
+                        accountStatus: user.accountStatus,
+                        banned: user.banned
+                    }
+                });
+            }
+        )
+    })
+})
+
 // Register user
 router.post('/', (req, res) => {
     const userId  = req.body.userId;
-    const tokens = req.body.tokens;
 
     if(!Number.isInteger(userId)){
         return res.status(400).json({msg: "No user id was specified."});
@@ -22,8 +49,7 @@ router.post('/', (req, res) => {
             }
 
             const newUser = new User({
-                userId,
-                tokens
+                userId
             });
 
             newUser.save().then(user => {
