@@ -8,7 +8,8 @@ let User = require('../../database/models/user.model');
 
 const mixerLogin = {
     authURL: "/mixer",
-    callbackURL: "/mixer/callback",
+    callbackURLLocal: "/mixer/callback",
+    callbackURLRemote: "/api/v1/auth/mixer/callback",
     clientID: process.env.MIXER_CLIENT_ID,
     clientSecret: process.env.MIXER_CLIENT_SECRET
 }
@@ -17,10 +18,10 @@ const mixerLogin = {
 passport.use(new MixerStrategy({
     clientID: mixerLogin.clientID,
     clientSecret: mixerLogin.clientID,
-    callbackURL: process.env.MIXER_CLIENT_SECRET + mixerLogin.callbackURL
+    callbackURL: mixerLogin.callbackURLRemote
   },
   function(accessToken, refreshToken, profile, done) {
-    return res.status(200).json({msg: profile});
+    console.log(profile);
   }
 ));
 
@@ -28,7 +29,7 @@ passport.use(new MixerStrategy({
 router.get(mixerLogin.authURL, passport.authenticate('mixer'));
 
 // Mixer callback
-router.get(mixerLogin.callbackURL, 
+router.get(mixerLogin.callbackURLLocal, 
   passport.authenticate('mixer', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
