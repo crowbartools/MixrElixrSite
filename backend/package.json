@@ -17,6 +17,8 @@
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.7"
+    "mongoose": "^5.7.7",
+    "passport": "^0.4.0",
+    "passport-mixer": "^1.0.2"
   }
 }

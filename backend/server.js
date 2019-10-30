@@ -7,6 +7,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Globals
+global.app = app;
+
 // Middleware
 app.use(helmet()); // Use first.
 app.use(cors());
@@ -17,7 +20,7 @@ const ElixrDbConnect = require('./database/connect');
 ElixrDbConnect.connect();
 
 const APIRegisterRoutes = require('./api/registerRoutes');
-APIRegisterRoutes.registerRoutes(app);
+APIRegisterRoutes.registerRoutes();
 
 // Starting the server
 app.listen(port, () => {
