@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET;
+const elixrApiHelpers = require('../helpers/loggedInCheck');
 
 // Models
 let User = require('../../database/models/user.model');
@@ -14,23 +13,15 @@ router.get('/:id', (req, res) => {
             return res.status(400).json({msg: "No user found."});
         }
 
-        jwt.sign(
-            {userId: user.id},
-            jwtSecret,
-            {expiresIn: 3600},
-            (err, token) => {
-                if(err) throw err;
-                res.json({
-                    token,
-                    user: {
-                        userId: user.userId,
-                        emotes: user.emotes,
-                        accountStatus: user.accountStatus,
-                        banned: user.banned
-                    }
-                });
+        res.json({
+            token,
+            user: {
+                userId: user.userId,
+                emotes: user.emotes,
+                accountStatus: user.accountStatus,
+                banned: user.banned
             }
-        )
+        });
     })
 })
 
@@ -53,20 +44,12 @@ router.post('/', (req, res) => {
             });
 
             newUser.save().then(user => {
-                jwt.sign(
-                    {userId: user.id},
-                    jwtSecret,
-                    {expiresIn: 3600},
-                    (err, token) => {
-                        if(err) throw err;
-                        res.json({
-                            token,
-                            user: {
-                                userId: user.userId
-                            }
-                        });
+                res.json({
+                    token,
+                    user: {
+                        userId: user.userId
                     }
-                )
+                });
             });
         });
 });
