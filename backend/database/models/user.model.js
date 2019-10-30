@@ -9,6 +9,18 @@ const userSchema = new Schema({
         trim: true,
         minlength: 1
     },
+    accountStatus: {
+        type: String,
+        default: "User"
+    },
+    banned: {
+        type: Boolean,
+        default: false
+    },
+    emotes: {
+        type: Array,
+        default: []
+    }
 }, {
     timestamps: true
 });
