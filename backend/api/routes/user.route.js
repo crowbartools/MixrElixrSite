@@ -9,6 +9,7 @@ let User = require('../../database/models/user.model');
 // Register user
 router.post('/', (req, res) => {
     const userId  = req.body.userId;
+    const tokens = req.body.tokens;
 
     if(!Number.isInteger(userId)){
         return res.status(400).json({msg: "No user id was specified."});
@@ -21,28 +22,26 @@ router.post('/', (req, res) => {
             }
 
             const newUser = new User({
-                userId
+                userId,
+                tokens
             });
 
-            newUser.save()
-                .then(user => {
-                    jwt.sign(
-                        {userId: user.id},
-                        jwtSecret,
-                        {expiresIn: 3600},
-                        (err, token) => {
-                            if(err){
-                                console.log(err);
+            newUser.save().then(user => {
+                jwt.sign(
+                    {userId: user.id},
+                    jwtSecret,
+                    {expiresIn: 3600},
+                    (err, token) => {
+                        if(err) throw err;
+                        res.json({
+                            token,
+                            user: {
+                                userId: user.userId
                             }
-                            res.json({
-                                token,
-                                user: {
-                                    userId: user.userId
-                                }
-                            });
-                        }
-                    )
-                });
+                        });
+                    }
+                )
+            });
         });
 });
 
