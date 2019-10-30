@@ -17,7 +17,7 @@ const mixerLogin = {
 // Setup passport
 passport.use(new MixerStrategy({
     clientID: mixerLogin.clientID,
-    clientSecret: mixerLogin.clientID,
+    clientSecret: mixerLogin.clientSecret,
     callbackURL: mixerLogin.callbackURLRemote
   },
   function(accessToken, refreshToken, profile, done) {
