@@ -44,9 +44,31 @@ passport.use(new MixerStrategy({
     callbackURL: process.env.HOST_NAME + '/api/v1/auth/mixer/callback'
   },
   function(accessToken, refreshToken, profile, done) {
-    // TODO: Use profile to create an account if none exists.
-    console.log('Got mixer profile!');
-    return done(null, profile.id);
+    // Register a new user if none exists.
+    const userId  = profile.id;
+
+    if(!Number.isInteger(userId)){
+        return res.status(400).json({msg: "No user id was specified."});
+    }
+
+    User.findOne({ userId })
+        .then(user => {
+            if(user) {
+              return done(null, profile.id);
+            }
+
+            const newUser = new User({
+                userId
+            });
+
+            newUser.save().then(user => {
+              return done(null, profile.id);
+            });
+        })
+        .catch(err => {
+          console.log(err);
+          res.redirect('/');
+        });
   }
 ));
 
@@ -57,7 +79,8 @@ router.get('/mixer', passport.authenticate('mixer'));
 router.get('/mixer/callback', passport.authenticate('mixer', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    console.log('Successful mixer auth! Going home.');
+    console.log('Successful mixer auth!');
+    
     res.redirect('/');
   });
 
