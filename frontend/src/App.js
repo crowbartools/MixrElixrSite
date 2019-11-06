@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './css/App.css';
 
+// Component Includes
 import Navbar from "./components/global/navbar.component";
 import Homepage from "./components/homepage.component";
 import Emotes from "./components/emotes/emotes.component";
