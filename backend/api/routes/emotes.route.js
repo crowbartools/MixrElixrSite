@@ -13,12 +13,14 @@ router.get('/:id', (req, res) => {
 
 router.route('/save').get((req, res) => {
     // You should be able to EDIT and CREATE via this endpoint.
+    // Should be able to pass an array of emotes to save.
     console.log('You got the emote save endpoint!');
 });
 
 router.route('/delete').get((req, res) => {
     // You should be able to delete an emote via this endpoint
     // ONLY if you are an owner or admin.
+    // Should be able to pass an array of emotes to delete.
     console.log('You got the emote request endpoint!');
 });
 

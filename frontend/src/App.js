@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
+
+import Navbar from "./components/global/navbar.component";
+import Homepage from "./components/homepage.component";
+import Emotes from "./components/emotes/emotes.component";
+import Emote from "./components/emotes/emote.component";
+import User from "./components/user/user.component";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container-fluid">
+        <Navbar />
+        <br/>
+        <Route path="/" exact component={Homepage} />
+        <Route path="/emotes" component={Emotes} />
+        <Route path="/emote/:id" compontent={Emote} />
+        <Route path="/user" compontent={User} />
+      </div>
+    </Router>
   );
 }
 
