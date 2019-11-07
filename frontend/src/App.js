@@ -6,8 +6,9 @@ import './css/App.css';
 // Component Includes
 import Navbar from "./components/global/navbar.component";
 import Homepage from "./components/homepage.component";
-import Emotes from "./components/emotes/emotes.component";
-import Emote from "./components/emotes/emote.component";
+
+import {EmotesView} from "./views/emotes.view";
+
 import User from "./components/user/user.component";
 
 function App() {
@@ -16,10 +17,9 @@ function App() {
       <div className="container-fluid">
         <Navbar />
         <br/>
-        <Route path="/" exact component={Homepage} />
-        <Route path="/emotes" component={Emotes} />
-        <Route path="/emote/:id" compontent={Emote} />
-        <Route path="/user" compontent={User} />
+        <Route exact path="/" exact component={Homepage} />
+        <Route path="/emotes/" component={EmotesView} />
+        <Route path="/user/" compontent={User} />
       </div>
     </Router>
   );

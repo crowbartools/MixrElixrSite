@@ -25,6 +25,11 @@ const emoteSchema = new Schema({
         trim: true,
         required: true
     },
+    command: {
+        type: String,
+        trim: true,
+        required: true
+    },
     url: {
         type: String,
         trim: true,
