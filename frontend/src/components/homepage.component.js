@@ -7,13 +7,13 @@ export default class Homepage extends Component {
         return (
             <main role="main">
                 <div className="jumbotron">
-                <div className="container">
-                    <h1 className="display-3">MixrElixr</h1>
-                    <p>Fruitcake cake brownie soufflé. Tootsie roll donut caramels cake bonbon cheesecake jelly beans sweet roll macaroon.</p>
-                    <p>
-                        <Link to="/" className="nav-link btn btn-primary btn-lg" role="button">Home</Link>
-                    </p>
-                </div>
+                    <div className="container">
+                        <h1 className="display-3">MixrElixr</h1>
+                        <p>Fruitcake cake brownie soufflé. Tootsie roll donut caramels cake bonbon cheesecake jelly beans sweet roll macaroon.</p>
+                        <p>
+                            <Link to="/" className="btn btn-primary btn-lg" role="button">Download</Link>
+                        </p>
+                    </div>
                 </div>
 
                 <div className="container">
