@@ -1,6 +1,6 @@
 const express = require('express');
-const helmet = require('helmet')
-const cors = require('cors');
+const helmet = require('helmet');
+const cors = require('./api/cors');
 
 require('dotenv').config();
 
@@ -12,13 +12,14 @@ global.app = app;
 
 // Middleware
 app.use(helmet()); // Use first.
-app.use(cors());
+app.use(cors.corsPolicy);
 app.use(express.json());
 
 // Connect to MongoDB.
 const ElixrDbConnect = require('./database/connect');
 ElixrDbConnect.connect();
 
+// Register our api routes.
 const APIRegisterRoutes = require('./api/registerRoutes');
 APIRegisterRoutes.registerRoutes();
 

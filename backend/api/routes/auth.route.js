@@ -76,12 +76,24 @@ passport.use(new MixerStrategy({
 router.get('/mixer', passport.authenticate('mixer'));
 
 // Mixer callback
-router.get('/mixer/callback', passport.authenticate('mixer', { failureRedirect: '/login' }),
+router.get('/mixer/callback', passport.authenticate('mixer', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
     console.log('Successful mixer auth!');
     
-    res.redirect('/');
+    res.redirect('http://localhost:3000');
   });
+
+// Successfully Authenticated?
+router.get("/mixer/success", (req, res) => {
+  if (req.user) {
+    res.json({
+      success: true,
+      message: "user has successfully authenticated",
+      user: req.user,
+      cookies: req.cookies
+    });
+  }
+});
 
 module.exports = router;
