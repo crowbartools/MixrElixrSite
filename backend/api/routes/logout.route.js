@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', function(req, res){
     req.logout();
-    res.redirect('/');
+    res.redirect('http://localhost:3000');
 });
   
 
