@@ -44,25 +44,37 @@ passport.use(new MixerStrategy({
     callbackURL: process.env.HOST_NAME + '/api/v1/auth/mixer/callback'
   },
   function(accessToken, refreshToken, profile, done) {
-    // Register a new user if none exists.
-    const userId  = profile.id;
+    // This is the mixer user profile, not channel.
+    profile = profile._raw;
 
-    if(!Number.isInteger(userId)){
+    // Register a new user if none exists.
+    const mixerUser = {
+      channelId: profile.channel.id,
+      username: profile.channel.token,
+      avatarUrl: profile.avatarUrl,
+      numFollowers: profile.channel.numFollowers,
+      creationDate: profile.channel.createdAt,
+      partnered: profile.channel.partnered
+    }
+
+    if(!Number.isInteger(mixerUser.channelId)){
         return res.status(400).json({msg: "No user id was specified."});
     }
 
-    User.findOne({ userId })
+    User.findOne({ channelId: mixerUser.channelId })
         .then(user => {
             if(user) {
-              return done(null, profile.id);
+              // Note we're returning the mixer data here, not our data.
+              return done(null, mixerUser);
             }
 
+            // No user found, make a new one.
             const newUser = new User({
-                userId
+                channelId: mixerUser.channelId
             });
 
             newUser.save().then(user => {
-              return done(null, profile.id);
+              return done(null, mixerUser);
             });
         })
         .catch(err => {
@@ -79,8 +91,6 @@ router.get('/mixer', passport.authenticate('mixer'));
 router.get('/mixer/callback', passport.authenticate('mixer', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    console.log('Successful mixer auth!');
-    
     res.redirect('http://localhost:3000');
   });
 
@@ -89,7 +99,7 @@ router.get("/mixer/success", (req, res) => {
   if (req.user) {
     res.json({
       success: true,
-      message: "user has successfully authenticated",
+      message: "User authenticated",
       user: req.user,
       cookies: req.cookies
     });

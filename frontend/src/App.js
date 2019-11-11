@@ -31,26 +31,26 @@ class App extends Component {
         "Access-Control-Allow-Credentials": true
       }
     })
-      .then(response => {
-        if (response.status === 200) return response.json();
-        throw new Error("failed to authenticate user");
-      })
-      .then(responseJson => {
-        console.log(responseJson);
-        this.setState({
-          authenticated: true,
-          user: {
-            userId: responseJson.userId,
-            username: responseJson.username
-          }
-        });
-      })
-      .catch(error => {
-        this.setState({
-          authenticated: false,
-          error: "Failed to authenticate user"
-        });
+    .then(response => {
+      if (response.status === 200) return response.json();
+      throw new Error("Failed to authenticate user");
+    })
+    .then(responseJson => {
+      console.log(responseJson);
+      this.setState({
+        authenticated: true,
+        user: {
+          userId: responseJson.userId,
+          username: responseJson.username
+        }
       });
+    })
+    .catch(error => {
+      this.setState({
+        authenticated: false,
+        error: "Failed to authenticate user"
+      });
+    });
   }
   
   handleNotAuthenticated = () => {
