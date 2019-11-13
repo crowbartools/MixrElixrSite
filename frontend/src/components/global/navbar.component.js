@@ -58,13 +58,14 @@ class Navbar extends Component {
 
     render() {
         const { authenticated } = this.props;
+        console.log(this.props);
         return (
             <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
                 <Link to="/" className="navbar-brand">MixrElixr</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                <div className="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
                     <ul className="navbar-nav mr-auto">
                         <li className="navbar-item">
                             <Link to="/" className="nav-link">Home</Link>
@@ -74,21 +75,32 @@ class Navbar extends Component {
                         </li>
                         <li className="navbar-item">
                             <Link to="/user" className="nav-link">Profile</Link>
-                        </li>
+                        </li>                        
+                    </ul>
+                    <ul className="navbar-nav">
                         {
-                            authenticated
-                            ?   <div className="navbar-item">
-                                    <Link to="/logout" className="nav-link">
-                                        <span onClick={this.logoutUser}>Logout</span>
-                                    </Link>
-                                </div>
-                            :   <li className="navbar-item">
-                                    <Link to="/login" className="nav-link">
+                            authenticated ?
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span className="userAvatar"><img src={this.props.user.avatarUrl} /></span>
+                                        <span className="username">{this.props.user.username}</span>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                        <Link to="/user" className="dropdown-item">Profile</Link>
+                                        <Link to="/user" className="dropdown-item">Profile</Link>
+                                        <div className="dropdown-divider"></div>
+                                        <a href="#" className="dropdown-item">
+                                            <span onClick={this.logoutUser}>Logout</span>
+                                        </a>
+                                    </div>
+                                </li>
+                            :   
+                                <li className="navbar-item">
+                                    <a href="#" className="nav-link">
                                         <span onClick={this.loginUser}>Login</span>
-                                    </Link>
+                                    </a>
                                 </li>
                         }
-                        
                     </ul>
                 </div>
             </nav>

@@ -16,3 +16,9 @@
 
 .App-link {
   color: #09d3ac; }
+
+/** Navbar **/
+.navbar-nav .userAvatar {
+  padding: 10px; }
+  .navbar-nav .userAvatar img {
+    width: 30px; }

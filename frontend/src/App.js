@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+
+import 'jquery';
+import 'popper.js';
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+
 import './css/App.css';
 
 // Component Includes
