@@ -68,14 +68,23 @@ class Navbar extends Component {
                 <div className="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
                     <ul className="navbar-nav mr-auto">
                         <li className="navbar-item">
-                            <Link to="/" className="nav-link">Home</Link>
+                            <Link to="/about" className="nav-link">About</Link>
                         </li>
-                        <li className="navbar-item">
-                            <Link to="/emotes" className="nav-link">Emotes</Link>
-                        </li>
-                        <li className="navbar-item">
-                            <Link to="/user" className="nav-link">Profile</Link>
-                        </li>                        
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Emotes
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <Link to="/emotes/create" className="dropdown-item">Submit emotes</Link>
+                                <div className="dropdown-divider"></div>
+                                <Link to="/emotes/library" className="dropdown-item">Shared library</Link>
+                                {
+                                    authenticated ?
+                                        <Link to="/profile" className="dropdown-item">My emotes</Link>
+                                    : ""
+                                }
+                            </div>
+                        </li>                      
                     </ul>
                     <ul className="navbar-nav">
                         {
@@ -86,8 +95,7 @@ class Navbar extends Component {
                                         <span className="username">{this.props.user.username}</span>
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                        <Link to="/user" className="dropdown-item">Profile</Link>
-                                        <Link to="/user" className="dropdown-item">Profile</Link>
+                                        <Link to="/profile" className="dropdown-item">Profile</Link>
                                         <div className="dropdown-divider"></div>
                                         <a href="#" className="dropdown-item">
                                             <span onClick={this.logoutUser}>Logout</span>

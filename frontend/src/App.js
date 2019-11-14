@@ -5,16 +5,17 @@ import { Provider } from 'react-redux';
 
 import 'jquery';
 import 'popper.js';
-import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import './css/App.css';
 
 // Component Includes
 import Navbar from "./components/global/navbar.component";
-import Homepage from "./components/homepage.component";
 import Footer from "./components/global/footer.compontent";
-import User from "./components/user/user.component";
+import Homepage from "./components/pages/misc/homepage.component";
+import About from "./components/pages/misc/about.component";
+import Profile from "./components/pages/user/profile.component";
 
 // Views
 import { EmotesView } from "./views/emotes.view";
@@ -33,8 +34,9 @@ class App extends Component {
             <Navbar />
             <br />
             <Route exact path="/" component={Homepage} />
+            <Route path="/about/" component={About} />
+            <Route path="/profile/" component={Profile} />
             <Route path="/emotes/" component={EmotesView} />
-            <Route path="/user/" compontent={User} />
             <br />
             <Footer />
           </div>
