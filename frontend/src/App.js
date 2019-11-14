@@ -11,8 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './css/App.css';
 
 // Component Includes
-import Navbar from "./components/global/navbar.component";
-import Footer from "./components/global/footer.compontent";
+import Navbar from "./components/fragments/global/navbar.component";
+import Footer from "./components/fragments/global/footer.compontent";
 import Homepage from "./components/pages/misc/homepage.component";
 import About from "./components/pages/misc/about.component";
 import Profile from "./components/pages/user/profile.component";
