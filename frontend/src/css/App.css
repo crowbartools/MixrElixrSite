@@ -22,3 +22,14 @@
   padding: 10px; }
   .navbar-nav .userAvatar img {
     width: 30px; }
+
+/** Emote Submission **/
+.submission-wrapper .emote-dropzone {
+  border: 2px dashed #dedede;
+  border-radius: 5px;
+  background: #f5f5f5; }
+  .submission-wrapper .emote-dropzone .card-body .p {
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 500;
+    font-size: initial;
+    text-transform: uppercase; }

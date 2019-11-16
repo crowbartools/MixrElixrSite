@@ -10,14 +10,12 @@ import CreateEmote from "../components/pages/emotes/create-emote.component";
 
 export const EmotesView = ({ match }) => {
   return (
-    <div>
-        <Switch>
-            <Route exact path={match.url} component={EmoteLibrary} />
-            <Route path={`${match.url}/create/`} component={CreateEmote} />
-            <Route path={`${match.url}/library/`} component={EmoteLibrary} />
-            <Route path={`${match.url}/:id/`} component={Emote} />
-        </Switch>
-    </div>
+    <Switch>
+        <Route exact path={match.url} component={EmoteLibrary} />
+        <Route path={`${match.url}/create/`} component={CreateEmote} />
+        <Route path={`${match.url}/library/`} component={EmoteLibrary} />
+        <Route path={`${match.url}/:id/`} component={Emote} />
+    </Switch>
   )
 };
 
