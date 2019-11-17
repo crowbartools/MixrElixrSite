@@ -60,7 +60,7 @@ class Navbar extends Component {
         const { authenticated } = this.props;
         console.log(this.props);
         return (
-            <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+            <nav className="navbar navbar-dark bg-primary navbar-expand-lg">
                 <Link to="/" className="navbar-brand">MixrElixr</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>

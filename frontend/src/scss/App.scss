@@ -34,9 +34,10 @@
 /** Emote Submission **/
 .submission-wrapper{
   .emote-dropzone{
+    margin-top: 2em;
     border: 2px dashed #dedede;
     border-radius: 5px;
-    background: #f5f5f5;
+    text-align:center;
     .card-body{
       .p{
         color: rgba(0,0,0,.54);
