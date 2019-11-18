@@ -1,3 +1,6 @@
+# Project specific
+user-content/
+
 # Logs
 logs
 *.log

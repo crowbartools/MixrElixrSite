@@ -17,9 +17,8 @@ router.get('/:id', (req, res) => {
             token,
             user: {
                 userId: user.userId,
-                emotes: user.emotes,
-                accountStatus: user.accountStatus,
-                banned: user.banned
+                accountLevel: user.account.level,
+                emotes: user.emotes
             }
         });
     })

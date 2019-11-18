@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Navbar extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         // Fetch does not send cookies. So you should add credentials: 'include'
         fetch("http://localhost:5000/api/v1/auth/mixer/success", {
@@ -58,7 +54,6 @@ class Navbar extends Component {
 
     render() {
         const { authenticated } = this.props;
-        console.log(this.props);
         return (
             <nav className="navbar navbar-dark bg-primary navbar-expand-lg">
                 <Link to="/" className="navbar-brand">MixrElixr</Link>

@@ -9,17 +9,26 @@ const userSchema = new Schema({
         trim: true,
         minlength: 1
     },
-    accountStatus: {
-        type: String,
-        default: "User"
-    },
-    banned: {
-        type: Boolean,
-        default: false
-    },
     emotes: {
         type: Array,
-        default: []
+        default: [],
+        required: true
+    },
+    account: {
+        level: {
+            type: String,
+            default: "User",
+            required: true,
+            trim: true,
+            minlength: 1
+        },
+        status: {
+            type: String,
+            default: "Active",
+            required: true,
+            trim: true,
+            minlength: 1
+        }
     }
 }, {
     timestamps: true

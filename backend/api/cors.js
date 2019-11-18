@@ -8,7 +8,8 @@ const whitelistDomains = [
 
 // Routes that can't be accessed by anyone other than whitelisted domains.
 const closedRoutes = [
-    '/api/v1/auth/mixer/success'
+    '/api/v1/auth/mixer/success',
+    '/api/v1/emotes/upload'
 ];
 
 function corsPolicy(req, res, next) {

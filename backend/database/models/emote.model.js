@@ -1,17 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const emoteSchema = new Schema({
-    emoteId: {
-        type: Number,
-        required:true,
-        unique: true,
-        trim: true
-    },
     ownerId: {
         type: Number,
         required: true,
-        unique: true,
         trim: true
     },
     shared: {
@@ -19,11 +13,6 @@ const emoteSchema = new Schema({
         required: true,
         trim: true,
         default: false
-    },
-    approver: {
-        type: String,
-        trim: true,
-        required: true
     },
     command: {
         type: String,
@@ -33,18 +22,40 @@ const emoteSchema = new Schema({
     url: {
         type: String,
         trim: true,
-        required: true
-    },
-    uses: {
-        type: Number,
-        trim: true,
         required: true,
-        default: 0
+        unique: true
+    },
+    request:{
+        status: {
+            type: String,
+            trim: true,
+            required: true,
+            default: "Pending"
+        },
+        approver: {
+            type: String,
+            trim: true,
+            default: ''
+        },
+        date: {
+            type: String,
+            trim: true,
+            required: true,
+            default: moment().toISOString()
+        }
+    },
+    meta: {
+        channels: {
+            type: Number,
+            trim: true,
+            required: true,
+            default: 1
+        }
     }
 }, {
     timestamps: true
 });
 
-const emotes = mongoose.model('Emotes', emoteSchema);
+const emote = mongoose.model('Emote', emoteSchema);
 
-module.exports = emotes;
+module.exports = emote;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Dropzone from 'react-dropzone';
-import FontAwesome from 'react-fontawesome';
+import { connect } from 'react-redux';
 
 import EmoteGuidelines from '../../fragments/emotes/emote-guidelines.component';
+import EmoteDropzone from '../../fragments/emotes/emote-dropzone.component';
 
-export default class CreateEmote extends Component {
+class CreateEmote extends Component {
     constructor(props){
         super(props);
 
@@ -22,52 +22,70 @@ export default class CreateEmote extends Component {
     }
 
     render(){
-        return (
-            <div className="submission-wrapper">
-                <div className="submission-guidelines">
-                    <div className="card">
-                        <div className="card-header">
-                            Submission Guidelines
+        const { authenticated } = this.props;
+
+        if(authenticated){
+            return (
+                <div className="submission-wrapper">
+                    <div className="submission-guidelines">
+                        <div className="card">
+                            <div className="card-header">
+                                Submission Guidelines
+                            </div>
+                            <div className="card-body">
+                                <div className="card-text">
+                                    <EmoteGuidelines />
+                                </div>
+                                {
+                                    this.state.agreedToTerms ?
+                                    <button className="btn btn-success">Thanks!</button>
+                                    :
+                                    <button className="btn btn-primary" onClick={this.agreedToTerms}>Click to accept.</button>
+                                }
+                            </div>
                         </div>
-                        <div className="card-body">
-                            <p className="card-text">
-                                <EmoteGuidelines />
-                            </p>
-                            {
-                                this.state.agreedToTerms ?
-                                <button className="btn btn-success">Thanks!</button>
-                                :
-                                <button className="btn btn-primary" onClick={this.agreedToTerms}>Click to accept.</button>
-                            }
+                    </div>
+                    {
+                        this.state.agreedToTerms &&
+                        <div className="dropzone-area">
+                            <div className="card">
+                                <div className="card-header">
+                                    Uploader
+                                </div>
+                                <div className="card-body">
+                                    <EmoteDropzone />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            );
+        } else {
+            return (
+                <div className="submission-wrapper">
+                    <div className="submission-login">
+                        <div className="card">
+                            <div className="card-header">
+                                Oops!
+                            </div>
+                            <div className="card-body">
+                                <div className="card-text">
+                                    To submit emotes, you'll need to log in! Click the link at the top right of the site to get started!
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {
-                    this.state.agreedToTerms &&
-                    <Dropzone onDrop={
-                            acceptedFiles => console.log(acceptedFiles)
-                        }>
-                        {({getRootProps, getInputProps}) => (
-                            <div>
-                                <div className="emote-dropzone card">
-                                    <div className="card-body" {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        <p><FontAwesome
-                                                className="submission-icon"
-                                                name="upload"
-                                                size="3x"
-                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                            />
-                                        </p>
-                                        <p>Drag 'n' drop some files here, or click to select files</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </Dropzone>
-                }
-            </div>
-        )
+            );
+        }
     }
-
 }
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        error: state.error,
+        authenticated: state.authenticated
+    };
+}
+export default connect(mapStateToProps)(CreateEmote);

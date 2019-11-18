@@ -6,13 +6,13 @@
  * @param {*} res 
  * @param {*} next 
  */
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next(); 
+function isLoggedIn(req) {
+    if (req != null && req.isAuthenticated()) {
+        return true; 
     }
 
     // User denied.
-    res.redirect('/')
+    return false;
 }
 
 module.exports.isLoggedIn = isLoggedIn;
