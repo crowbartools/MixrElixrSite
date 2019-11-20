@@ -19,11 +19,10 @@ const emoteSchema = new Schema({
         trim: true,
         required: true
     },
-    url: {
+    filename: {
         type: String,
         trim: true,
-        required: true,
-        unique: true
+        required: true
     },
     request:{
         status: {

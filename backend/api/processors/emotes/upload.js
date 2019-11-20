@@ -16,7 +16,7 @@ function createEmoteDBEntry(channelId, emotePath){
 
         emote.ownerId = channelId;
         emote.command = emoteName;
-        emote.url = "/user-content/" + channelId + "/" + path.basename(emotePath);
+        emote.filename = path.basename(emotePath);
 
         emote.save(function(err){
             if(err){
