@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 class Navbar extends Component {
     componentDidMount() {
-        // Fetch does not send cookies. So you should add credentials: 'include'
         fetch("http://localhost:5000/api/v1/auth/mixer/success", {
             method: "GET",
             credentials: "include",
@@ -14,26 +13,29 @@ class Navbar extends Component {
                 "Access-Control-Allow-Credentials": true
             }
         })
-            .then(response => {
-                if (response.status === 200) return response.json();
-                throw new Error("Failed to authenticate user");
-            })
-            .then(responseJson => {
-                this.props.dispatch({
-                    type: "AUTHENTICATED",
-                    payload: {
-                        user: responseJson.user
-                    }
-                });
-            })
-            .catch(error => {
-                this.props.dispatch({
-                    type: "NOT_AUTHENTICATED",
-                    payload: {
-                        error: error
-                    }
-                });
+        .then(response => {
+            if (response.status === 200) return response.json();
+            throw new Error("Failed to authenticate user");
+        })
+        .then(responseJson => {
+            this.props.dispatch({
+                type: "AUTHENTICATED",
+                payload: {
+                    user: responseJson.user
+                }
             });
+
+            // TODO: Remove this before going live!
+            console.log(this.props);
+        })
+        .catch(error => {
+            this.props.dispatch({
+                type: "NOT_AUTHENTICATED",
+                payload: {
+                    error: error
+                }
+            });
+        });
     }
 
     handleNotAuthenticated = () => {

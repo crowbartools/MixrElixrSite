@@ -5,6 +5,7 @@ const router = express.Router();
 const passport = require('passport');
 const MixerStrategy = require('passport-mixer').Strategy;
 const session = require('express-session');
+const getUserEmotes = require('../helpers/getUserEmotes');
 
 // Models
 let User = require('../../database/models/user.model');
@@ -97,11 +98,20 @@ router.get('/mixer/callback', passport.authenticate('mixer', { failureRedirect: 
 // Successfully Authenticated?
 router.get("/mixer/success", (req, res) => {
   if (req.user) {
-    res.json({
+    let userObj = {
       success: true,
       message: "User authenticated",
       user: req.user,
       cookies: req.cookies
+    };
+
+    getUserEmotes.get(req.user.channelId)
+    .then((userWithEmotes) => {
+      userObj.user['emotes'] = userWithEmotes.emotes;
+      return res.json(userObj);
+    })
+    .catch((err) =>{
+      return res.status(400).json({msg: err}); 
     });
   }
 });

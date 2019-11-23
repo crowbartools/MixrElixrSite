@@ -31,14 +31,16 @@ class App extends Component {
     return (
       <Provider store={elixrStore}>
         <Router>
-          <div className="container-fluid">
+          <div className="container-fluid header p-0 m-0">
             <Navbar />
-            <br />
+          </div>
+          <div className="container content-body">
             <Route exact path="/" component={Homepage} />
             <Route path="/about/" component={About} />
             <Route path="/profile/" component={Profile} />
             <Route path="/emotes/" component={EmotesView} />
-            <br />
+          </div>
+          <div className="container-fluid footer">
             <Footer />
           </div>
         </Router>
