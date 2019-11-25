@@ -9,6 +9,12 @@ const userSchema = new Schema({
         trim: true,
         minlength: 1
     },
+    username: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 1
+    },
     emotes: {
         type: Array,
         default: [],

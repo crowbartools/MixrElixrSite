@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 
 import 'jquery';
 import 'popper.js';
@@ -21,16 +21,46 @@ import Profile from "./components/pages/user/profile.component";
 // Views
 import { EmotesView } from "./views/emotes.view";
 
-// Redux State
-import reducer from "./store/reduxState";
-const elixrStore = createStore(reducer);
-
 // App
 class App extends Component {
+  componentDidMount() {
+      fetch("http://localhost:5000/api/v1/auth/mixer/success", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true
+          }
+      })
+      .then(response => {
+          if (response.status === 200) return response.json();
+          throw new Error("Failed to authenticate user");
+      })
+      .then(responseJson => {
+          this.props.dispatch({
+              type: "AUTHENTICATED",
+              payload: {
+                  user: responseJson.user
+              }
+          });
+
+          // TODO: Remove this before going live!
+          console.log(this.props);
+      })
+      .catch(error => {
+          this.props.dispatch({
+              type: "NOT_AUTHENTICATED",
+              payload: {
+                  error: error
+              }
+          });
+      });
+  };
+
   render() {
     return (
-      <Provider store={elixrStore}>
-        <Router>
+      <Router>
           <div className="container-fluid header p-0 m-0">
             <Navbar />
           </div>
@@ -43,10 +73,16 @@ class App extends Component {
           <div className="container-fluid footer">
             <Footer />
           </div>
-        </Router>
-      </Provider>
+      </Router>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+      user: state.user,
+      error: state.error,
+      authenticated: state.authenticated
+  };
+}
+export default connect(mapStateToProps)(App);

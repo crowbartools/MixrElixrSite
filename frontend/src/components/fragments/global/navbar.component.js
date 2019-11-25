@@ -3,46 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Navbar extends Component {
-    componentDidMount() {
-        fetch("http://localhost:5000/api/v1/auth/mixer/success", {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
-            }
-        })
-        .then(response => {
-            if (response.status === 200) return response.json();
-            throw new Error("Failed to authenticate user");
-        })
-        .then(responseJson => {
-            this.props.dispatch({
-                type: "AUTHENTICATED",
-                payload: {
-                    user: responseJson.user
-                }
-            });
-
-            // TODO: Remove this before going live!
-            console.log(this.props);
-        })
-        .catch(error => {
-            this.props.dispatch({
-                type: "NOT_AUTHENTICATED",
-                payload: {
-                    error: error
-                }
-            });
-        });
-    }
-
-    handleNotAuthenticated = () => {
-        this.props.dispatch({
-            authenticated: false
-        })
-    };
 
     loginUser(e) {
         e.preventDefault();

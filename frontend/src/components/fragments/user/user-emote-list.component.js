@@ -9,6 +9,7 @@ class EmoteList extends Component {
         super(props);
 
         this.filterEmotes = this.filterEmotes.bind(this);
+        this.ownerIdFormatter = this.ownerIdFormatter.bind(this);
     }
 
     filterEmotes(){
@@ -17,6 +18,10 @@ class EmoteList extends Component {
 
         let publishedList = [];
         let otherList = [];
+
+        if(emotes == null){
+            return otherList;
+        }
 
         emotes.forEach(emote => {
             if(emote.request.status === "published"){
@@ -33,19 +38,56 @@ class EmoteList extends Component {
         return otherList;
     }
 
+    beforeSaveCell(oldValue, newValue, row, column, done) {
+        setTimeout(() => {
+          if (window.confirm('Are you sure you want to make this change?')) {
+            // TODO: Push change to backend to update database.
+            console.log(row);
+            done(true);
+          } else {
+            done(false);
+          }
+        }, 0);
+        return { async: true };
+      }
+
+    imageFormatter(cell, row){
+        // TODO: Sanitize image src?
+        // TODO: Correct this path to whatever we choose to store the images in.
+        return (<img src={cell}/>);
+    }
+
+    ownerIdFormatter(cell, row, column){
+        if(cell == this.props.user.channelId){
+            let link = "https://mixer.com/" + this.props.user.username;
+            return (<a href={link} target="_blank">{this.props.user.username}</a>);
+        }
+
+        let emotes = this.props.user.emotes;
+        let correctEmote = emotes.filter(emote => cell === emote.ownerId);
+
+        let link = "https://mixer.com/" + correctEmote[0].ownerUsername;
+        return (<a href={link} target="_blank">{correctEmote[0].ownerUsername}</a>);
+    }   
+
     render() {
         const columns = [{
             dataField: 'url',
-            text: 'Url'
+            text: 'Url',
+            formatter: this.imageFormatter,
+            editable: false
           }, {
             dataField: 'command',
             text: 'Commands'
           }, {
             dataField: 'ownerId',
-            text: 'Owner ID'
+            text: 'Owner',
+            editable: false,
+            formatter: this.ownerIdFormatter
           }, {
             dataField: 'meta.channels',
-            text: 'Channels'
+            text: 'Channels',
+            editable: false
           }];
           
           const selectRow = {
@@ -54,18 +96,19 @@ class EmoteList extends Component {
             clickToEdit: true  // Click to edit cell also
           };
           
-          const cellEdit = {
-            mode: 'click'
-          };
+          const beforeSaveCell = this.beforeSaveCell;
 
         return (
             <BootstrapTable
-                bootstrap4={true}
+                bootstrap4={ true }
                 keyField="_id"
                 data={ this.filterEmotes() }
                 columns={ columns }
                 selectRow={ selectRow }
-                cellEdit={ cellEditFactory({ mode: 'click' }) }
+                cellEdit={ cellEditFactory({
+                    mode: 'click',
+                    beforeSaveCell
+                  })}
             />
         )
     }

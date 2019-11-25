@@ -65,13 +65,16 @@ passport.use(new MixerStrategy({
     User.findOne({ channelId: mixerUser.channelId })
         .then(user => {
             if(user) {
-              // Note we're returning the mixer data here, not our data.
+              // We update the username field since mixer users can change it anytime.
+              user.username = mixerUser.username;
+              user.save();
               return done(null, mixerUser);
             }
 
             // No user found, make a new one.
             const newUser = new User({
-                channelId: mixerUser.channelId
+                channelId: mixerUser.channelId,
+                username: mixerUser.username
             });
 
             newUser.save().then(user => {
