@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const uploadEmote = require('../processors/emotes/upload');
+const uploadNewEmote = require('../processors/emotes/emoteNewUpload');
 
-router.route('/upload').post((req, res, next)  => {
-    uploadEmote.upload(req, res);
+router.route('/create').post((req, res, next)  => {
+    uploadNewEmote.upload(req, res);
 });
 
 /**

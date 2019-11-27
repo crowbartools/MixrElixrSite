@@ -22,7 +22,7 @@ export default class EmoteDropzone extends Component {
         console.log(files);
         console.log(bodyData);
         
-        fetch("http://localhost:5000/api/v1/emotes/upload", {
+        fetch("http://localhost:5000/api/v1/emotes/create", {
             method: "POST",
             credentials: "include",
             headers: {

@@ -125,7 +125,7 @@ function uploadEmote (req, res) {
             }
     
             // Upload files and update DB entries.
-            let emotePath = path.join(__dirname, '../../../../user-content', channelId.toString(), filename);
+            let emotePath = path.join(__dirname, '../../../../user-content/review', channelId.toString(), filename);
             fs.mkdir(path.dirname(emotePath), { recursive: true }, (err) => {
                 if (err) throw err;
                 let fstream = fs.createWriteStream(emotePath);
@@ -140,7 +140,7 @@ function uploadEmote (req, res) {
                     })
                     .catch(err =>{
                         console.log(err);
-                    })                    
+                    })
                 });
                 file.pipe(fstream);
             });

@@ -99,17 +99,18 @@ class EmoteList extends Component {
           const beforeSaveCell = this.beforeSaveCell;
 
         return (
-            <BootstrapTable
-                bootstrap4={ true }
-                keyField="_id"
-                data={ this.filterEmotes() }
-                columns={ columns }
-                selectRow={ selectRow }
-                cellEdit={ cellEditFactory({
-                    mode: 'click',
-                    beforeSaveCell
-                  })}
-            />
+          <BootstrapTable
+            bootstrap4={ true }
+            wrapperClasses="table-responsive-md"
+            keyField="_id"
+            data={ this.filterEmotes() }
+            columns={ columns }
+            selectRow={ selectRow }
+            cellEdit={ cellEditFactory({
+                mode: 'click',
+                beforeSaveCell
+              })}
+          />
         )
     }
 }
