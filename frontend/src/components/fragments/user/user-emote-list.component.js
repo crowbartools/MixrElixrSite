@@ -10,6 +10,7 @@ class EmoteList extends Component {
 
         this.filterEmotes = this.filterEmotes.bind(this);
         this.ownerIdFormatter = this.ownerIdFormatter.bind(this);
+        this.setEditModalEmote = this.setEditModalEmote.bind(this);
     }
 
     filterEmotes(){
@@ -38,19 +39,6 @@ class EmoteList extends Component {
         return otherList;
     }
 
-    beforeSaveCell(oldValue, newValue, row, column, done) {
-        setTimeout(() => {
-          if (window.confirm('Are you sure you want to make this change?')) {
-            // TODO: Push change to backend to update database.
-            console.log(row);
-            done(true);
-          } else {
-            done(false);
-          }
-        }, 0);
-        return { async: true };
-      }
-
     imageFormatter(cell, row){
         // TODO: Sanitize image src?
         // TODO: Correct this path to whatever we choose to store the images in.
@@ -70,15 +58,26 @@ class EmoteList extends Component {
         return (<a href={link} target="_blank">{correctEmote[0].ownerUsername}</a>);
     }   
 
+    setEditModalEmote(row){
+      this.props.dispatch({
+          type: "USER_EMOTES_UPDATE_EDITED",
+          payload: {
+              editingEmote: row
+          }
+      });
+
+      console.log(this.props);
+    }
+
     render() {
         const columns = [{
             dataField: 'url',
-            text: 'Url',
+            text: 'Emote',
             formatter: this.imageFormatter,
             editable: false
           }, {
             dataField: 'command',
-            text: 'Commands'
+            text: 'Command'
           }, {
             dataField: 'ownerId',
             text: 'Owner',
@@ -86,17 +85,26 @@ class EmoteList extends Component {
             formatter: this.ownerIdFormatter
           }, {
             dataField: 'meta.channels',
-            text: 'Channels',
+            text: 'Active users',
             editable: false
+          }, {
+            dataField: 'modifyButtons',
+            isDummyField: true,
+            text: '',
+            formatter: (cellContent, row) => {
+              if(row.ownerUsername === this.props.user.username){
+                return (
+                  <button onClick={() => this.setEditModalEmote(row)} type="button" className="btn btn-primary" data-toggle="modal" data-target="#editEmoteModal">
+                    Edit / Delete
+                  </button>
+                );
+              } else {
+                return (
+                  <div></div>
+                );
+              }
+            }
           }];
-          
-          const selectRow = {
-            mode: 'checkbox',
-            clickToSelect: true,
-            clickToEdit: true  // Click to edit cell also
-          };
-          
-          const beforeSaveCell = this.beforeSaveCell;
 
         return (
           <BootstrapTable
@@ -105,11 +113,6 @@ class EmoteList extends Component {
             keyField="_id"
             data={ this.filterEmotes() }
             columns={ columns }
-            selectRow={ selectRow }
-            cellEdit={ cellEditFactory({
-                mode: 'click',
-                beforeSaveCell
-              })}
           />
         )
     }
@@ -119,7 +122,8 @@ function mapStateToProps(state) {
     return {
         user: state.user,
         error: state.error,
-        authenticated: state.authenticated
+        authenticated: state.authenticated,
+        system: state.system
     };
 }
 export default connect(mapStateToProps)(EmoteList);

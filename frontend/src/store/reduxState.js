@@ -8,6 +8,9 @@ const initialState = {
         username: false,
         emotes: []
     },
+    system: {
+        editingEmote: false,
+    },
     error: null,
     authenticated: false
   }
@@ -15,14 +18,6 @@ const initialState = {
 function reducer(state = initialState, action){
     switch (action.type) {
         case "AUTHENTICATED":
-            let newUser = action.payload.user;
-            state.authenticated = true;
-            state.user.avatarUrl = newUser.avatarUrl;
-            state.user.channelId = newUser.channelId;
-            state.user.creationDate = newUser.creationDate;
-            state.user.numFollowers = newUser.numFollowers;
-            state.user.partnered = newUser.partnered;
-            state.user.username = newUser.username;
             return {
                 ...state,
                 authenticated: true,
@@ -39,6 +34,13 @@ function reducer(state = initialState, action){
             return {
                 ...state,
                 user: user
+            };
+        case "USER_EMOTES_UPDATE_EDITED":
+            let system = state.system;
+            system.editingEmote = action.payload.editingEmote;
+            return {
+                ...state,
+                system: system
             }
         default:
             return state;

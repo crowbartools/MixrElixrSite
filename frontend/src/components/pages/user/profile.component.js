@@ -68,7 +68,8 @@ function mapStateToProps(state) {
     return {
         user: state.user,
         error: state.error,
-        authenticated: state.authenticated
+        authenticated: state.authenticated,
+        system: state.system
     };
 }
 export default connect(mapStateToProps)(Profile);
