@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+// Bootstrap components
+import {Card} from 'react-bootstrap';
+
 class Navbar extends Component {
 
     loginUser(e) {

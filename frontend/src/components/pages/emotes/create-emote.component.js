@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// Bootstrap components
+import {Card} from 'react-bootstrap';
+
 import EmoteGuidelines from '../../fragments/emotes/emote-guidelines.component';
 import EmoteDropzone from '../../fragments/emotes/emote-dropzone.component';
 
@@ -28,34 +31,40 @@ class CreateEmote extends Component {
             return (
                 <div className="submission-wrapper">
                     <div className="submission-guidelines">
-                        <div className="card">
-                            <div className="card-header">
-                                Submission Guidelines
-                            </div>
-                            <div className="card-body">
-                                <div className="card-text">
-                                    <EmoteGuidelines />
-                                </div>
-                                {
-                                    this.state.agreedToTerms ?
-                                    <button className="btn btn-success">Thanks!</button>
-                                    :
-                                    <button className="btn btn-primary" onClick={this.agreedToTerms}>Click to accept.</button>
-                                }
-                            </div>
-                        </div>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>
+                                    Submission Guidelines
+                                </Card.Title>
+                                <Card.Text>
+                                    <div className="emote-guidelines-wrap">
+                                        <EmoteGuidelines />
+                                    </div>
+                                    {
+                                        this.state.agreedToTerms ?
+                                        <button className="btn btn-success">Thanks!</button>
+                                        :
+                                        <button className="btn btn-primary" onClick={this.agreedToTerms}>Click to accept.</button>
+                                    }
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
                     </div>
                     {
                         this.state.agreedToTerms &&
                         <div className="dropzone-area">
-                            <div className="card">
-                                <div className="card-header">
-                                    Uploader
-                                </div>
-                                <div className="card-body">
-                                    <EmoteDropzone />
-                                </div>
-                            </div>
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title>
+                                        Uploader
+                                    </Card.Title>
+                                    <Card.Text>
+                                        <div className="dropzone-wrap">
+                                            <EmoteDropzone />
+                                        </div>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
                         </div>
                     }
                 </div>
@@ -64,16 +73,16 @@ class CreateEmote extends Component {
             return (
                 <div className="submission-wrapper">
                     <div className="submission-login">
-                        <div className="card">
-                            <div className="card-header">
-                                Oops!
-                            </div>
-                            <div className="card-body">
-                                <div className="card-text">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>
+                                    Oops!
+                                </Card.Title>
+                                <Card.Text>
                                     To submit emotes, you'll need to log in! Click the link at the top right of the site to get started!
-                                </div>
-                            </div>
-                        </div>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
                     </div>
                 </div>
             );

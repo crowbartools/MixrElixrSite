@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// Bootstrap components
+import {Row, Col, Card} from 'react-bootstrap';
+
 import EmoteList from '../../fragments/user/user-emote-list.component';
 
 class Profile extends Component {
@@ -14,51 +17,52 @@ class Profile extends Component {
 
         if(authenticated){
             return (
-                <div className="row">
-                    <div className="col-9 profile-content">
-                        
-                        <div className="card">
-                            <div className="card-header">
-                                Pending Emotes
-                            </div>
-                            <div className="card-body">
-                                <div className="card-text">
+                <Row>
+                    <Col lg={9} className="profile-content">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>
+                                    Pending Emotes
+                                </Card.Title>
+                                <Card.Text>
                                     <EmoteList emoteStatus="pending"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-header">
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>
                                 Live Emotes
-                            </div>
-                            <div className="card-body">
-                                <div className="card-text">
+                                </Card.Title>
+                                <Card.Text>
                                     <EmoteList emoteStatus="published"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-3 profile-sidebar">
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col lg={3} className="profile-sidebar">
                         This will be the sidebar. Over here we'll show information such as user level, account creation date, and maybe in the future options to add editors and such.
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             )
         } else {
             return (
-                <div className="submission-wrapper">
-                    <div className="submission-login">
-                        <div className="card">
-                            <div className="card-header">
-                                Oops!
-                            </div>
-                            <div className="card-body">
-                                <div className="card-text">
-                                    To see your profile, you'll need to log in! Click the link at the top right of the site to get started!
+                <Row>
+                    <div className="submission-wrapper">
+                        <div className="submission-login">
+                            <div className="card">
+                                <div className="card-header">
+                                    Oops!
+                                </div>
+                                <div className="card-body">
+                                    <div className="card-text">
+                                        To see your profile, you'll need to log in! Click the link at the top right of the site to get started!
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Row>
             );
         }
     }

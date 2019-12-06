@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { createStore } from 'redux';
 import { connect } from 'react-redux';
 
+// Bootstrap components
+import Container from 'react-bootstrap/Container';
+
+// CSS and JS
 import 'jquery';
-import 'popper.js';
 import "bootstrap/dist/js/bootstrap.min.js";
 
 import "font-awesome/css/font-awesome.min.css";
@@ -62,18 +64,18 @@ class App extends Component {
   render() {
     return (
       <Router>
-          <div className="container-fluid header p-0 m-0">
+          <Container fluid={true} className="header p-0 m-0">
             <Navbar />
-          </div>
-          <div className="container content-body">
+          </Container>
+          <Container className="content-body">
             <Route exact path="/" component={Homepage} />
             <Route path="/about/" component={About} />
             <Route path="/profile/" component={Profile} />
             <Route path="/emotes/" component={EmotesView} />
-          </div>
-          <div className="container-fluid footer">
+          </Container>
+          <Container className="container-fluid footer">
             <Footer />
-          </div>
+          </Container>
       </Router>
     );
   }
