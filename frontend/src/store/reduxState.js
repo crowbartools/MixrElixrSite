@@ -35,13 +35,6 @@ function reducer(state = initialState, action){
                 ...state,
                 user: user
             };
-        case "USER_EMOTES_UPDATE_EDITED":
-            let system = state.system;
-            system.editingEmote = action.payload.editingEmote;
-            return {
-                ...state,
-                system: system
-            }
         default:
             return state;
     }

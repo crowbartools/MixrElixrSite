@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-// Bootstrap components
-import {Card} from 'react-bootstrap';
-
 class Navbar extends Component {
 
     loginUser(e) {
@@ -34,7 +31,7 @@ class Navbar extends Component {
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Emotes
                             </a>
-                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <div className="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
                                 <Link to="/emotes/create" className="dropdown-item">Submit emotes</Link>
                                 <div className="dropdown-divider"></div>
                                 <Link to="/emotes/library" className="dropdown-item">Shared library</Link>

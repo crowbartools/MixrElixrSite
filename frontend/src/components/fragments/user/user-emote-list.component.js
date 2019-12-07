@@ -4,13 +4,23 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
+// Bootstrap components
+import {Modal, Button} from 'react-bootstrap';
+
 class EmoteList extends Component {
     constructor(props){
         super(props);
 
+        this.state = {
+          showModal: false,
+          editingEmote: false
+        };
+
         this.filterEmotes = this.filterEmotes.bind(this);
         this.ownerIdFormatter = this.ownerIdFormatter.bind(this);
-        this.setEditModalEmote = this.setEditModalEmote.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.EditEmoteModal = this.EditEmoteModal.bind(this);
+        this.closeEditModal = this.closeEditModal.bind(this);
     }
 
     filterEmotes(){
@@ -58,15 +68,41 @@ class EmoteList extends Component {
         return (<a href={link} target="_blank">{correctEmote[0].ownerUsername}</a>);
     }   
 
-    setEditModalEmote(row){
-      this.props.dispatch({
-          type: "USER_EMOTES_UPDATE_EDITED",
-          payload: {
-              editingEmote: row
-          }
-      });
+    openEditModal(row){
+      let {showModal, editingEmote} = this.state;
+      showModal = true;
+      editingEmote = row;
 
-      console.log(this.props);
+      this.setState({showModal, editingEmote});
+    }
+
+    closeEditModal(){
+      let {showModal, editingEmote} = this.state;
+      showModal = false;
+      editingEmote = false;
+
+      this.setState({showModal, editingEmote});
+    }
+
+    EditEmoteModal() {
+      return (
+          <Modal show={this.state.showModal} onHide={this.closeEditModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {this.state.editingEmote['_id']}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.closeEditModal}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.closeEditModal}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+      );
     }
 
     render() {
@@ -94,7 +130,7 @@ class EmoteList extends Component {
             formatter: (cellContent, row) => {
               if(row.ownerUsername === this.props.user.username){
                 return (
-                  <button onClick={() => this.setEditModalEmote(row)} type="button" className="btn btn-primary" data-toggle="modal" data-target="#editEmoteModal">
+                  <button onClick={() => this.openEditModal(row)} type="button" className="btn btn-primary" data-toggle="modal" data-target="#editEmoteModal">
                     Edit / Delete
                   </button>
                 );
@@ -107,13 +143,16 @@ class EmoteList extends Component {
           }];
 
         return (
-          <BootstrapTable
-            bootstrap4={ true }
-            wrapperClasses="table-responsive-md"
-            keyField="_id"
-            data={ this.filterEmotes() }
-            columns={ columns }
-          />
+          <section>
+            <BootstrapTable
+              bootstrap4={ true }
+              wrapperClasses="table-responsive-md"
+              keyField="_id"
+              data={ this.filterEmotes() }
+              columns={ columns }
+            />
+            <this.EditEmoteModal></this.EditEmoteModal>
+          </section>
         )
     }
 }

@@ -24,9 +24,9 @@ class Profile extends Component {
                                 <Card.Title>
                                     Pending Emotes
                                 </Card.Title>
-                                <Card.Text>
+                                <div className="card-text">
                                     <EmoteList emoteStatus="pending"/>
-                                </Card.Text>
+                                </div>
                             </Card.Body>
                         </Card>
                         <Card>
@@ -34,9 +34,9 @@ class Profile extends Component {
                                 <Card.Title>
                                 Live Emotes
                                 </Card.Title>
-                                <Card.Text>
+                                <div className="card-text">
                                     <EmoteList emoteStatus="published"/>
-                                </Card.Text>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>
