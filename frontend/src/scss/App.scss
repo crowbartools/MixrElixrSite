@@ -42,33 +42,11 @@
 
   /** Emote Submission **/
   .submission-wrapper{
-    .dropzone-area{
-      margin-top: 1.5em;
-      .dzu-dropzone{
-        border: 2px dashed #dedede;
-        border-radius: 5px;
-        text-align:center;
-        overflow: inherit;
-        .dzu-inputLabel{
-          color:white;
-          text-transform: none;
-        }
-        .dzu-previewContainer{
-          padding: 1em 3%;
-          background-color: #444;
-        }
-        .dzu-previewButton{
-          color:white;
-          background-image: url('../images/x-icon.png')!important;
-          background-repeat: no-repeat;
-        }
-      }
-      .card-body{
-        color: rgba(0,0,0,.54);
-        font-weight: 500;
-        font-size: initial;
-        text-transform: uppercase;
-      }
+    .card-body{
+      color:white;
+      font-weight: 500;
+      font-size: initial;
+      text-transform: uppercase;
     }
   }
 
@@ -77,4 +55,33 @@
   }
 }
 
+/** Dropzone area styles **/
+.dropzone-area{
+  margin-top: 1.5em;
+  .dzu-dropzone{
+    border: 2px dashed #dedede;
+    border-radius: 5px;
+    text-align:center;
+    overflow: inherit;
+    .dzu-inputLabel{
+      color:white;
+      text-transform: none;
+    }
+    .dzu-previewContainer{
+      padding: 1em 3%;
+      background-color: #444;
+    }
+    .dzu-previewButton{
+      color:white;
+      background-image: url('../images/x-icon.png')!important;
+      background-repeat: no-repeat;
+    }
+  }
+}
 
+
+.modal-dialog{
+  .modalDelete{
+    margin-right: auto;
+  }
+}

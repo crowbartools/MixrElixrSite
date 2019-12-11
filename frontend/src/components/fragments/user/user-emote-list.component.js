@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
+import EmoteDropzone from '../../fragments/emotes/emote-dropzone.component';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 // Bootstrap components
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, Form} from 'react-bootstrap';
 
 class EmoteList extends Component {
     constructor(props){
@@ -84,16 +85,37 @@ class EmoteList extends Component {
       this.setState({showModal, editingEmote});
     }
 
+    addFile(event){
+      console.log(event.target.files[0]);
+    }
+
     EditEmoteModal() {
       return (
           <Modal show={this.state.showModal} onHide={this.closeEditModal}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>{this.state.editingEmote['command']}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {this.state.editingEmote['_id']}
+              <Form>
+                <Form.Group controlId="formCommand">
+                  <Form.Label>Command</Form.Label>
+                  <Form.Control type="text" placeholder={this.state.editingEmote['command']} />
+                  <Form.Text className="text-muted">
+                    The command people type into chat to display the emote.
+                  </Form.Text>
+                </Form.Group>
+
+                <Form.Group controlId="formImageUpload">
+                    <Form.Label>Update image</Form.Label>
+                    <Form.Control type="file" onChange={this.addFile}/>
+                </Form.Group>
+              </Form>
+
             </Modal.Body>
             <Modal.Footer>
+              <Button className="modalDelete" variant="danger" onClick={this.closeEditModal}>
+                Delete Emote
+              </Button>
               <Button variant="secondary" onClick={this.closeEditModal}>
                 Close
               </Button>
