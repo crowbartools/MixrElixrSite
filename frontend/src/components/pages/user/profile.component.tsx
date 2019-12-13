@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 // Bootstrap components
 import { Row, Col, Card } from 'react-bootstrap';
 
-import { IAppState, IUser, ISystem } from 'store/reduxState';
-import EmoteList from '../../fragments/user/user-emote-list.component';
+import { IAppState, IUser } from 'store/reduxState';
+import EmoteList, { EmoteListStatus } from '../../fragments/user/user-emote-list.component';
 
 interface IProfileProps {
   user?: IUser;
   error?: Error;
   authenticated: boolean;
-  system: ISystem;
 }
 
 type IAllProfileProps =
@@ -35,7 +34,7 @@ class Profile extends Component<IAllProfileProps, {}> {
                   Pending Emotes
                 </Card.Title>
                 <div className='card-text'>
-                  <EmoteList emoteStatus='pending' />
+                  <EmoteList emoteStatus={EmoteListStatus.pending} />
                 </div>
               </Card.Body>
             </Card>
@@ -45,7 +44,7 @@ class Profile extends Component<IAllProfileProps, {}> {
                   Live Emotes
                 </Card.Title>
                 <div className='card-text'>
-                  <EmoteList emoteStatus='published' />
+                  <EmoteList emoteStatus={EmoteListStatus.published} />
                 </div>
               </Card.Body>
             </Card>
@@ -83,7 +82,6 @@ function mapStateToProps(state: IAppState): IProfileProps {
     user: state.user,
     error: state.error,
     authenticated: state.authenticated,
-    system: state.system,
   };
 }
 

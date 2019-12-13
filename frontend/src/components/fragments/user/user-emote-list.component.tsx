@@ -8,10 +8,34 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 // Bootstrap components
 import { Modal, Button, Form } from 'react-bootstrap';
-import { IAppState } from 'store/reduxState';
+import { IAppState, IUser } from 'store/reduxState';
 
-class EmoteList extends Component<any, any> {
-  constructor(props: any) {
+export enum EmoteListStatus {
+  pending,
+  published,
+}
+
+interface IEmoteListProps {
+  emoteStatus: EmoteListStatus;
+}
+
+interface IReduxEmoteListProps {
+  user?: IUser;
+  error?: Error;
+  authenticated: boolean;
+}
+
+type IAllEmoteListProps =
+  IEmoteListProps &
+  IReduxEmoteListProps;
+
+interface IEmoteListState {
+  showModal: boolean;
+  editingEmote: any;
+}
+
+class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
+  constructor(props: IAllEmoteListProps) {
     super(props);
 
     this.state = {
@@ -22,7 +46,7 @@ class EmoteList extends Component<any, any> {
 
   @bind
   private filterEmotes(): any[] {
-    const emotes = this.props.user.emotes;
+    const emotes = this.props.user ? this.props.user.emotes : null;
     const wantedStatus = this.props.emoteStatus;
 
     const publishedList: any[] = [];
@@ -33,14 +57,14 @@ class EmoteList extends Component<any, any> {
     }
 
     emotes.forEach((emote: any) => {
-      if (emote.request.status === 'published') {
+      if (emote.request.status === EmoteListStatus.published) {
         publishedList.push(emote);
       } else {
         otherList.push(emote);
       }
     });
 
-    if (wantedStatus === 'published') {
+    if (wantedStatus === EmoteListStatus.published) {
       return publishedList;
     }
 
@@ -55,7 +79,11 @@ class EmoteList extends Component<any, any> {
   }
 
   @bind
-  private ownerIdFormatter(cell: string, row: any, column: any): JSX.Element {
+  private ownerIdFormatter(cell: number, row: any, column: any): JSX.Element {
+    if (!this.props.user) {
+      throw new Error('User must be signed in');
+    }
+
     if (cell === this.props.user.channelId) {
       const channelLink = 'https://mixer.com/' + this.props.user.username;
       return (<a href={channelLink} target='_blank'>{this.props.user.username}</a>);
@@ -154,11 +182,11 @@ class EmoteList extends Component<any, any> {
       isDummyField: true,
       text: '',
       formatter: (cellContent: any, row: any): JSX.Element => {
-        if (row.ownerUsername === this.props.user.username) {
+        if (this.props.user !== undefined && row.ownerUsername === this.props.user.username) {
           return (
             <button onClick={() => this.openEditModal(row)} type='button' className='btn btn-primary' data-toggle='modal' data-target='#editEmoteModal'>
               Edit / Delete
-                  </button>
+            </button>
           );
         } else {
           return (
@@ -188,7 +216,6 @@ function mapStateToProps(state: IAppState): IAppState {
     user: state.user,
     error: state.error,
     authenticated: state.authenticated,
-    system: state.system,
   };
 }
 
