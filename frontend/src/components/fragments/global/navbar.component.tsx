@@ -13,13 +13,13 @@ interface INavbarProps {
 type IAllNavbarProps =
   INavbarProps;
 
-class Navbar extends Component<IAllNavbarProps, any> {
-  private loginUser(e: any): void {
+class Navbar extends Component<IAllNavbarProps, {}> {
+  private loginUser(e: React.MouseEvent<HTMLElement>): void {
     e.preventDefault();
     window.open('http://localhost:5000/api/v1/auth/mixer', '_self');
   }
 
-  private logoutUser(e: any): void {
+  private logoutUser(e: React.MouseEvent<HTMLElement>): void {
     e.preventDefault();
     window.open('http://localhost:5000/logout', '_self');
   }
@@ -40,7 +40,7 @@ class Navbar extends Component<IAllNavbarProps, any> {
             <li className='nav-item dropdown'>
               <a className='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                 Emotes
-                            </a>
+              </a>
               <div className='dropdown-menu dropdown-menu-left' aria-labelledby='navbarDropdownMenuLink'>
                 <Link to='/emotes/create' className='dropdown-item'>Submit emotes</Link>
                 <div className='dropdown-divider'></div>

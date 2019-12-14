@@ -5,9 +5,20 @@ import produce, { Draft } from 'immer';
 // This allows your break apart this stuff and avoid one large file.
 
 // These can all go in 'types'
+export enum EmoteListStatus {
+  pending,
+  published,
+}
+
+export interface IEmoteRequest {
+  status: EmoteListStatus;
+}
+
 export interface IEmote {
+  ownerId: number;
   ownerUsername: string;
   command: string;
+  request: IEmoteRequest;
 }
 
 export interface IUser {

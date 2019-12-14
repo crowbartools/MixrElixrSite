@@ -2,18 +2,11 @@ import { bind } from 'decko';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import EmoteDropzone from '../emotes/emote-dropzone.component';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 // Bootstrap components
 import { Modal, Button, Form } from 'react-bootstrap';
-import { IAppState, IUser } from 'store/reduxState';
-
-export enum EmoteListStatus {
-  pending,
-  published,
-}
+import { IAppState, IUser, IEmote, EmoteListStatus } from 'store/reduxState';
 
 interface IEmoteListProps {
   emoteStatus: EmoteListStatus;
@@ -45,18 +38,18 @@ class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
   }
 
   @bind
-  private filterEmotes(): any[] {
+  private filterEmotes(): IEmote[] {
     const emotes = this.props.user ? this.props.user.emotes : null;
     const wantedStatus = this.props.emoteStatus;
 
-    const publishedList: any[] = [];
-    const otherList: any[] = [];
+    const publishedList: IEmote[] = [];
+    const otherList: IEmote[] = [];
 
     if (emotes === null) {
       return otherList;
     }
 
-    emotes.forEach((emote: any) => {
+    emotes.forEach((emote: IEmote) => {
       if (emote.request.status === EmoteListStatus.published) {
         publishedList.push(emote);
       } else {
@@ -90,7 +83,7 @@ class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
     }
 
     const emotes = this.props.user.emotes;
-    const correctEmote = emotes.filter((emote: any) => cell === emote.ownerId);
+    const correctEmote = emotes.filter((emote: IEmote) => cell === emote.ownerId);
 
     const link = 'https://mixer.com/' + correctEmote[0].ownerUsername;
     return (<a href={link} target='_blank'>{correctEmote[0].ownerUsername}</a>);
@@ -116,8 +109,10 @@ class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
   }
 
   @bind
-  private addFile(event: any): void {
-    console.log(event.target.files[0]);
+  private addFile(event: React.ChangeEvent<HTMLInputElement>): void {
+    if (event.target && event.target.files && event.target.files.length > 0) {
+      console.log(event.target.files[0]);
+    }
   }
 
   @bind
@@ -134,7 +129,7 @@ class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
               <Form.Control type='text' placeholder={this.state.editingEmote['command']} />
               <Form.Text className='text-muted'>
                 The command people type into chat to display the emote.
-                  </Form.Text>
+              </Form.Text>
             </Form.Group>
 
             <Form.Group controlId='formImageUpload'>
@@ -147,13 +142,13 @@ class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
         <Modal.Footer>
           <Button className='modalDelete' variant='danger' onClick={this.closeEditModal}>
             Delete Emote
-              </Button>
+          </Button>
           <Button variant='secondary' onClick={this.closeEditModal}>
             Close
-              </Button>
+          </Button>
           <Button variant='primary' onClick={this.closeEditModal}>
             Save Changes
-              </Button>
+          </Button>
         </Modal.Footer>
       </Modal>
     );

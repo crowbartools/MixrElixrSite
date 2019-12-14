@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 // Bootstrap components
 import { Row, Col, Card } from 'react-bootstrap';
 
-import { IAppState, IUser } from 'store/reduxState';
-import EmoteList, { EmoteListStatus } from '../../fragments/user/user-emote-list.component';
+import { IAppState, IUser, EmoteListStatus } from 'store/reduxState';
+import EmoteList from 'components/fragments/user/user-emote-list.component';
 
 interface IProfileProps {
   user?: IUser;
@@ -17,10 +17,6 @@ type IAllProfileProps =
   IProfileProps;
 
 class Profile extends Component<IAllProfileProps, {}> {
-  constructor(props: IAllProfileProps) {
-    super(props);
-  }
-
   public render(): JSX.Element {
     const { authenticated } = this.props;
 

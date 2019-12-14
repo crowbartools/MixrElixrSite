@@ -5,7 +5,7 @@ export default class EmoteGuidelines extends Component<{}, {}> {
     return (
       <div>
         This is where we'll put submission guidelines and rules. You will be required to hit the "accept" button before submitting emotes.
-            </div>
+      </div>
     );
   }
 }

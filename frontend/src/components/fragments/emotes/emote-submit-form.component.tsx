@@ -1,8 +1,15 @@
 import { bind } from 'decko';
-import React, { Component } from 'react';
+import * as React from 'react';
 
-export default class EmoteSubmitForm extends Component<any, any> {
-  constructor(props: any) {
+interface IEmoteSubmitFormState {
+  emoteImage: string;
+  emoteSize: string;
+  emoteCommand: string;
+  emoteShared: string;
+}
+
+export default class EmoteSubmitForm extends React.Component<{}, IEmoteSubmitFormState> {
+  constructor(props: {}) {
     super(props);
 
     this.state = {
@@ -14,34 +21,34 @@ export default class EmoteSubmitForm extends Component<any, any> {
   }
 
   @bind
-  private onChangeEmoteImage(e: any): void {
+  private onChangeEmoteImage(e: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       emoteImage: e.target.value,
     });
   }
 
   @bind
-  private onChangeEmoteSize(e: any): void {
+  private onChangeEmoteSize(e: React.ChangeEvent<HTMLSelectElement>): void {
     this.setState({
       emoteSize: e.target.value,
     });
   }
 
   @bind
-  private onChangeEmoteCommand(e: any): void {
+  private onChangeEmoteCommand(e: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       emoteCommand: e.target.value,
     });
   }
 
   @bind
-  private onChangeEmoteShared(e: any): void {
+  private onChangeEmoteShared(e: React.ChangeEvent<HTMLSelectElement>): void {
     this.setState({
       emoteShared: e.target.value,
     });
   }
 
-  private onSubmit(e: any): void {
+  private onSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
     const emote = {
