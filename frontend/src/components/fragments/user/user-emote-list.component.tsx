@@ -2,16 +2,33 @@ import { bind } from 'decko';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import EmoteDropzone from '../emotes/emote-dropzone.component';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 // Bootstrap components
 import { Modal, Button, Form } from 'react-bootstrap';
-import { IAppState } from 'store/reduxState';
+import { IAppState, IUser, IEmote, EmoteListStatus } from 'store/reduxState';
 
-class EmoteList extends Component<any, any> {
-  constructor(props: any) {
+interface IEmoteListProps {
+  emoteStatus: EmoteListStatus;
+}
+
+interface IReduxEmoteListProps {
+  user?: IUser;
+  error?: Error;
+  authenticated: boolean;
+}
+
+type IAllEmoteListProps =
+  IEmoteListProps &
+  IReduxEmoteListProps;
+
+interface IEmoteListState {
+  showModal: boolean;
+  editingEmote: any;
+}
+
+class EmoteList extends Component<IAllEmoteListProps, IEmoteListState> {
+  constructor(props: IAllEmoteListProps) {
     super(props);
 
     this.state = {
@@ -21,26 +38,26 @@ class EmoteList extends Component<any, any> {
   }
 
   @bind
-  private filterEmotes(): any[] {
-    const emotes = this.props.user.emotes;
+  private filterEmotes(): IEmote[] {
+    const emotes = this.props.user ? this.props.user.emotes : null;
     const wantedStatus = this.props.emoteStatus;
 
-    const publishedList: any[] = [];
-    const otherList: any[] = [];
+    const publishedList: IEmote[] = [];
+    const otherList: IEmote[] = [];
 
     if (emotes === null) {
       return otherList;
     }
 
-    emotes.forEach((emote: any) => {
-      if (emote.request.status === 'published') {
+    emotes.forEach((emote: IEmote) => {
+      if (emote.request.status === EmoteListStatus.published) {
         publishedList.push(emote);
       } else {
         otherList.push(emote);
       }
     });
 
-    if (wantedStatus === 'published') {
+    if (wantedStatus === EmoteListStatus.published) {
       return publishedList;
     }
 
@@ -55,14 +72,18 @@ class EmoteList extends Component<any, any> {
   }
 
   @bind
-  private ownerIdFormatter(cell: string, row: any, column: any): JSX.Element {
+  private ownerIdFormatter(cell: number, row: any, column: any): JSX.Element {
+    if (!this.props.user) {
+      throw new Error('User must be signed in');
+    }
+
     if (cell === this.props.user.channelId) {
       const channelLink = 'https://mixer.com/' + this.props.user.username;
       return (<a href={channelLink} target='_blank'>{this.props.user.username}</a>);
     }
 
     const emotes = this.props.user.emotes;
-    const correctEmote = emotes.filter((emote: any) => cell === emote.ownerId);
+    const correctEmote = emotes.filter((emote: IEmote) => cell === emote.ownerId);
 
     const link = 'https://mixer.com/' + correctEmote[0].ownerUsername;
     return (<a href={link} target='_blank'>{correctEmote[0].ownerUsername}</a>);
@@ -88,8 +109,10 @@ class EmoteList extends Component<any, any> {
   }
 
   @bind
-  private addFile(event: any): void {
-    console.log(event.target.files[0]);
+  private addFile(event: React.ChangeEvent<HTMLInputElement>): void {
+    if (event.target && event.target.files && event.target.files.length > 0) {
+      console.log(event.target.files[0]);
+    }
   }
 
   @bind
@@ -106,7 +129,7 @@ class EmoteList extends Component<any, any> {
               <Form.Control type='text' placeholder={this.state.editingEmote['command']} />
               <Form.Text className='text-muted'>
                 The command people type into chat to display the emote.
-                  </Form.Text>
+              </Form.Text>
             </Form.Group>
 
             <Form.Group controlId='formImageUpload'>
@@ -119,13 +142,13 @@ class EmoteList extends Component<any, any> {
         <Modal.Footer>
           <Button className='modalDelete' variant='danger' onClick={this.closeEditModal}>
             Delete Emote
-              </Button>
+          </Button>
           <Button variant='secondary' onClick={this.closeEditModal}>
             Close
-              </Button>
+          </Button>
           <Button variant='primary' onClick={this.closeEditModal}>
             Save Changes
-              </Button>
+          </Button>
         </Modal.Footer>
       </Modal>
     );
@@ -154,11 +177,11 @@ class EmoteList extends Component<any, any> {
       isDummyField: true,
       text: '',
       formatter: (cellContent: any, row: any): JSX.Element => {
-        if (row.ownerUsername === this.props.user.username) {
+        if (this.props.user !== undefined && row.ownerUsername === this.props.user.username) {
           return (
             <button onClick={() => this.openEditModal(row)} type='button' className='btn btn-primary' data-toggle='modal' data-target='#editEmoteModal'>
               Edit / Delete
-                  </button>
+            </button>
           );
         } else {
           return (
@@ -188,7 +211,6 @@ function mapStateToProps(state: IAppState): IAppState {
     user: state.user,
     error: state.error,
     authenticated: state.authenticated,
-    system: state.system,
   };
 }
 

@@ -22,7 +22,12 @@ import Homepage from './components/pages/misc/homepage.component';
 import About from './components/pages/misc/about.component';
 import Profile from './components/pages/user/profile.component';
 
-import { IAppState, IUser } from 'store/reduxState';
+import {
+  createAuthenticatedAction,
+  createNotAuthenticatedAction,
+  IAppState,
+  IUser,
+} from 'store/reduxState';
 
 // Views
 import { EmotesView } from './views/emotes.view';
@@ -36,6 +41,13 @@ interface IAppProps {
 type IAllAppProps =
   IAppProps &
   DispatchProp;
+
+interface IBackendUser {
+  success: boolean;
+  message: string;
+  user: IUser;
+  cookies: any;
+}
 
 // App
 class App extends Component<IAllAppProps, {}> {
@@ -76,13 +88,8 @@ class App extends Component<IAllAppProps, {}> {
       });
 
       if (response.status === 200) {
-        const responseJson: any = await response.json();
-        this.props.dispatch({
-          type: 'AUTHENTICATED',
-          payload: {
-            user: responseJson.user,
-          },
-        });
+        const responseJson: IBackendUser = await response.json();
+        this.props.dispatch(createAuthenticatedAction(responseJson.user));
 
         // TODO: Remove this before going live!
         console.log(this.props);
@@ -91,12 +98,7 @@ class App extends Component<IAllAppProps, {}> {
       }
 
     } catch (error) {
-      this.props.dispatch({
-        type: 'NOT_AUTHENTICATED',
-        payload: {
-          error,
-        },
-      });
+      this.props.dispatch(createNotAuthenticatedAction(error));
     }
   }
 }

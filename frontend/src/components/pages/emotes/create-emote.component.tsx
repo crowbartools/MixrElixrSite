@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 // Bootstrap components
 import { Card } from 'react-bootstrap';
 
-import EmoteGuidelines from '../../fragments/emotes/emote-guidelines.component';
-import EmoteDropzone from '../../fragments/emotes/emote-dropzone.component';
+import EmoteGuidelines from 'components/fragments/emotes/emote-guidelines.component';
+import EmoteDropzone from 'components/fragments/emotes/emote-dropzone.component';
 
 import { IAppState, IUser } from 'store/reduxState';
 
@@ -19,7 +19,11 @@ interface ICreateEmoteProps {
 type IAllCreateEmoteProps =
   ICreateEmoteProps;
 
-class CreateEmote extends Component<IAllCreateEmoteProps, any> {
+interface ICreateEmoteState {
+  agreedToTerms: boolean;
+}
+
+class CreateEmote extends Component<IAllCreateEmoteProps, ICreateEmoteState> {
   constructor(props: IAllCreateEmoteProps) {
     super(props);
 
